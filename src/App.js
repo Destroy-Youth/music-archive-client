@@ -1,11 +1,12 @@
 import logo from './logo.svg'
 import './App.css'
-import FolderReader from './components/FolderReader'
+import TracksContainer from './components/TracksContainer'
+import React from 'react'
 
 function App() {
   return (
     <div className="App">
-      <FolderReader />
+      <TracksContainer />
     </div>
   )
 }

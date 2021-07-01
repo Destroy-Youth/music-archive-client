@@ -1,16 +1,12 @@
 import React, { useState } from 'react'
 import * as musicMetadata from 'music-metadata-browser'
 
-function FolderReader() {
-  const [files, setFiles] = useState([])
-  const [metadata, setMetadata] = useState([])
-
+function FolderReader({ tracks, setTracks }) {
   const onFilesSelected = async event => {
-    setFiles(event.target.files)
     for (const fileSelected of event.target.files) {
       try {
         const parsedMetadata = await parseFile(fileSelected)
-        setMetadata(metadata => [...metadata, parsedMetadata])
+        setTracks(tracks => [...tracks, parsedMetadata])
       } catch (err) {
         console.error(err)
       }
