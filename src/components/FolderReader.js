@@ -1,25 +1,16 @@
 import React, { useState } from 'react'
-import * as musicMetadata from 'music-metadata-browser'
 
-function FolderReader({ tracks, setTracks }) {
+function FolderReader({ setTracks }) {
   const onFilesSelected = async event => {
-    for (const fileSelected of event.target.files) {
-      try {
-        const parsedMetadata = await parseFile(fileSelected)
-        setTracks(tracks => [...tracks, parsedMetadata])
-      } catch (err) {
-        console.error(err)
-      }
-    }
+    const files = Array.from(event.target.files)
+    setTracks(files)
   }
-
-  const parseFile = async file =>
-    await musicMetadata.parseBlob(file, { native: true })
 
   return (
     <div>
       <input
         type="file"
+        accept="audio/*"
         name="filefield"
         multiple={true}
         onChange={onFilesSelected}
