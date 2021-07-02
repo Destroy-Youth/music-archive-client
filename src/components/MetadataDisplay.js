@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
+import * as musicMetadata from 'music-metadata-browser'
 
 const Card = styled.div`
   border-radius: 20px;
@@ -10,18 +11,24 @@ const Card = styled.div`
   margin: 0.5rem;
 `
 
+const albumPicture = styled.img`
+  width: 2em;
+  height: 2em;
+`
+
 const MetadataDisplay = ({ track }) => {
   const [albumPicture, setAlbumPicture] = useState(null)
+  const [metadata, setMetadata] = useState(null)
 
-  useEffect(() => {
-    setAlbumPicture(() => buildAlbumImage(track.common.picture[0].data))
+  useEffect(async () => {
+    const parsedFile = await parseFile(track)
+    setMetadata(parsedFile)
     return () => {}
-  }, [])
+  }, [track])
+
+  const parseFile = async file => await musicMetadata.parseBlob(file)
 
   const buildAlbumImage = data => {
-    // const stringChar = String.fromCharCode.apply(null, data);
-    // const stringChar = new TextDecoder().decode(data)
-
     const stringChar = data.reduce(
       (data, byte) => data + String.fromCharCode(byte),
       ''
@@ -32,10 +39,10 @@ const MetadataDisplay = ({ track }) => {
 
   return (
     <Card>
-      <p>{track.common.title}</p>
-      <p>{track.common.artist}</p>
-      <p>{track.common.album}</p>
-      <img src={albumPicture} />
+      <p>{metadata?.common?.title}</p>
+      <p>{metadata?.common?.artist}</p>
+      <p>{metadata?.common?.album}</p>
+      {/* <img src={buildAlbumImage(metadata?.common.picture[0].data)} /> */}
     </Card>
   )
 }

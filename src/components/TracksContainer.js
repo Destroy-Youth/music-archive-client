@@ -18,7 +18,7 @@ const TracksContainer = () => {
       <FolderReader setTracks={setTracks} />
       <MetadataDisplayContainer>
         {tracks.map(track => (
-          <MetadataDisplay track={track} />
+          <MetadataDisplay key={track.name} track={track} />
         ))}
       </MetadataDisplayContainer>
     </div>
